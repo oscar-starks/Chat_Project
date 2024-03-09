@@ -30,7 +30,7 @@ class MessageSerializer(serializers.Serializer):
         return data
 
     def get_user_id(self, message):
-        return str(message.sender.id)
+        return str(message.sender.uuid)
    
 
 class ChatSerializer(serializers.Serializer):
