@@ -31,7 +31,7 @@ class SendMessageView(AsyncAPIView):
         # this is a generic asynchronous function to complete the send message
         #  process found in the chat_message file
         await messenger(
-                user = user, 
+                user = receiver, 
                 serializer=serializer,
                 chat=chat_instance
                 )
