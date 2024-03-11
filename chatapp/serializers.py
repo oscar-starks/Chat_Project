@@ -20,8 +20,11 @@ class MessageSerializer(serializers.Serializer):
 
     def __init__(self, queryset=None, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+        context = self.context
+        request = context["request"]
         
-        if queryset is not None and not queryset[0].is_read:
+        if queryset is not None and not queryset[0].is_read and request.user != queryset[0].sender:
             message = queryset[0]
             chat = Chat.objects.get(messages = message)
             message_id = [str(i.id) for i in queryset]
