@@ -63,7 +63,7 @@ ASGI_APPLICATION = "learngual.asgi.application"
 
 AUTH_USER_MODEL = "accounts.User" 
 DATABASES = {
-    'default': {
+   'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
     }

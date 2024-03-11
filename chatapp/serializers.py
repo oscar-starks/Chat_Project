@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from accounts.serializers import UserProfileSerializer
 from django.core.validators import FileExtensionValidator
+from chatapp.notifications import read_receipt_notification
+from chatapp.models import Chat
+from asgiref.sync import async_to_sync
 
 class MessageSerializer(serializers.Serializer):
     text = serializers.CharField(required=False)
@@ -11,6 +14,24 @@ class MessageSerializer(serializers.Serializer):
     voice_note = serializers.FileField(validators=[
                         FileExtensionValidator(allowed_extensions=['mp3', 'wav'])
                         ], required = False)
+    is_read = serializers.BooleanField(read_only=True)
+    id = serializers.UUIDField(read_only = True)
+    
+
+    def __init__(self, queryset=None, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        if queryset is not None and not queryset[0].is_read:
+            message = queryset[0]
+            chat = Chat.objects.get(messages = message)
+            message_id = [str(i.id) for i in queryset]
+            
+            async_to_sync(read_receipt_notification)(message.sender, message_id, chat.id)
+
+            for instance in queryset:
+                instance.is_read = True
+                instance.save()
+                instance.is_read = False
 
 
     def validate(self, data):
@@ -22,12 +43,14 @@ class MessageSerializer(serializers.Serializer):
                     }
             )
         
-        if data.get("voice_note"):
-            voice_note = data.get("voice_note")
-
-            print(voice_note.size)
-        
         return data
+    
+    def to_representation(self, instance):
+        data = super(MessageSerializer, self).to_representation(instance)
+        print(instance)
+        return data
+    
+    
 
     def get_user_id(self, message):
         return str(message.sender.uuid)

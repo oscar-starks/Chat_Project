@@ -21,4 +21,4 @@ COPY . /code/
 EXPOSE 8000 6379
 
 # Start Django server and Redis server
-CMD ["sh", "-c", "service redis-server start && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "service redis-server start && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]

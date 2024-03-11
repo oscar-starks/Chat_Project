@@ -46,7 +46,7 @@ async def serialize_json(self, text_data, callback=None):
                         notification_data[key] = message_data[key]
 
 
-                print(self.room_group_name, "-------------------------------------------------------------------------------------------------------")
+                # print(self.room_group_name, "-------------------------------------------------------------------------------------------------------")
 
                 await self.channel_layer.group_send(
                     self.room_group_name,

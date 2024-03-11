@@ -29,3 +29,25 @@ async def message_notification(user, chat, message):
     async with websockets.connect(uri, extra_headers={"token":access}) as websocket:
         await websocket.send(json.dumps({"data":notification_data}))
 
+
+async def read_receipt_notification(user, message_id, chat_id):
+    '''
+    This function is called when a new message is opened.
+    It returns the ID of the message that was received
+    showing that it has been read
+    '''
+
+    access = get_socket_access_token({"user_id": (str(user.uuid))})
+    HOST = config("HOST")
+    uri = f"ws://{HOST}/ws/notification/"
+
+    notification_data = {
+        "notification_type": "read_receipt",
+        "notification_data": {
+                "chat_id": str(chat_id),
+                "message_id": message_id
+                }
+    }
+
+    async with websockets.connect(uri, extra_headers={"token":access}) as websocket:
+        await websocket.send(json.dumps({"data":notification_data}))

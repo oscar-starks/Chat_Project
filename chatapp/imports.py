@@ -12,3 +12,4 @@ from asgiref.sync import sync_to_async
 from drf_yasg.utils import swagger_auto_schema
 from common.paginator import customPaginator
 from adrf.views import APIView as AsyncAPIView
+from chatapp.notifications import read_receipt_notification

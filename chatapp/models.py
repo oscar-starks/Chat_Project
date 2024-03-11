@@ -28,7 +28,7 @@ class MessageModel(TimeStampedUUIDModel):
 class Chat(TimeStampedUUIDModel):
     user1 = models.ForeignKey(User, related_name="user1_chat", on_delete=models.SET_NULL, null=True)
     user2 = models.ForeignKey(User, related_name="user2_chat", on_delete=models.SET_NULL, null=True)
-    messages = models.ManyToManyField(MessageModel, blank=True)
+    messages = models.ManyToManyField(MessageModel, blank=True, related_name="chat")
 
     def __str__(self):
         return f"{self.user1.full_name} - {self.user2.full_name}"

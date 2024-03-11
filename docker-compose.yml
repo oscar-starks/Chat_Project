@@ -1,0 +1,31 @@
+version: '3'
+
+services:
+  web:
+    build: .
+    command: bash -c "
+          pip install -r requirements.txt
+          && python manage.py runserver 0.0.0.0:8000
+        "
+    volumes:
+      - .:/code
+    ports:
+      - "8000:8000"
+    depends_on:
+      - db
+
+  db:
+    image: postgres:13.4
+    environment:
+      POSTGRES_DB: learngual
+      POSTGRES_USER: learngual
+      POSTGRES_PASSWORD: learngual
+      POSTGRES_HOST: localhost
+    ports:
+      - "5432:5432"  # Expose PostgreSQL port
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/
+    command: psql
+
+volumes:
+  postgres_data:
