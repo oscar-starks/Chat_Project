@@ -5,6 +5,28 @@ from chatapp.notifications import read_receipt_notification
 from chatapp.models import Chat
 from asgiref.sync import async_to_sync
 
+
+
+class SendMessageSerializer(serializers.Serializer):
+    text = serializers.CharField(required=False)
+    image = serializers.ImageField(required=False)
+    receiver_id = serializers.UUIDField(write_only= True)
+    voice_note = serializers.FileField(validators=[
+                        FileExtensionValidator(allowed_extensions=['mp3', 'wav'])
+                        ], required = False)
+
+
+    def validate(self, data):
+        if not data.get("text") and not data.get("image") and not data.get("voice_note"):
+            raise serializers.ValidationError(
+                    {
+                    "status": "error",
+                    "message": "You must enter a text or an image or a voice_note."
+                    }
+            )
+        
+        return data
+
 class MessageSerializer(serializers.Serializer):
     text = serializers.CharField(required=False)
     image = serializers.ImageField(required=False)
@@ -23,6 +45,11 @@ class MessageSerializer(serializers.Serializer):
 
         context = self.context
         request = context["request"]
+
+        print(queryset[0].sender.email)
+        print(request.user.email)
+        for i in queryset:
+            print(i.sender.email, "--------------------------------")
         
         if queryset is not None and not queryset[0].is_read and request.user != queryset[0].sender:
             message = queryset[0]

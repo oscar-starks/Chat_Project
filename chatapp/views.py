@@ -2,7 +2,7 @@ from chatapp.imports import *
 
 class SendMessageView(AsyncAPIView):
     permission_classes = [IsAuthenticatedCustom]
-    serializer_class = MessageSerializer
+    serializer_class = SendMessageSerializer
 
     @swagger_auto_schema(request_body=serializer_class)
     async def post(self, request):
@@ -32,6 +32,7 @@ class SendMessageView(AsyncAPIView):
         #  process found in the chat_message file
         await messenger(
                 user = receiver, 
+                sender = user,
                 serializer=serializer,
                 chat=chat_instance
                 )
@@ -61,7 +62,7 @@ class GetChatsView(APIView):
         else:
             return CustomErrorResponse({"message":"invalid chat id"}, status=404)
         
-        messages = chat.messages.all()
+        messages = chat.messages.all().order_by('-created_at')
         return customPaginator(request, MessageSerializer, messages, page_number)
 
         

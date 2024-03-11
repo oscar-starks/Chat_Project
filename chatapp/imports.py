@@ -7,7 +7,7 @@ from chatapp.models import Chat, MessageModel
 from chatapp.threads import MessageImageSaverThread
 from chatapp.chat_message import messenger
 from accounts.models import User
-from chatapp.serializers import ChatSerializer, MessageSerializer, GetMessagesSerializer, AudioSerializer
+from chatapp.serializers import ChatSerializer, MessageSerializer, GetMessagesSerializer, AudioSerializer, SendMessageSerializer
 from asgiref.sync import sync_to_async
 from drf_yasg.utils import swagger_auto_schema
 from common.paginator import customPaginator

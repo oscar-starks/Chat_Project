@@ -2,11 +2,11 @@ from chatapp.threads import MessageImageSaverThread
 from chatapp.models import MessageModel
 from chatapp.notifications import message_notification
 
-async def messenger(serializer, user,chat):
+async def messenger(serializer,sender, user,chat):
     image = serializer.validated_data.pop("image", None)
     text = serializer.validated_data.pop("text", None)
 
-    message = await MessageModel.objects.acreate(sender=user)
+    message = await MessageModel.objects.acreate(sender=sender)
 
     if text:
         message.text = text
