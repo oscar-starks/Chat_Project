@@ -2,11 +2,6 @@ FROM python:3.10.4
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 
-# Install Redis
-RUN apt-get update && \
-    apt-get install -y redis-server && \
-    apt-get clean
-
 # Set the working directory in the container
 WORKDIR /code
 
@@ -21,4 +16,4 @@ COPY . /code/
 EXPOSE 8000 8000
 
 # Start Django server and Redis server
-CMD ["sh", "-c", "service redis-server start && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
+CMD ["sh", "-c", "python manage.py migrate && python manage.py runserver 0.0.0.0:8000"]
