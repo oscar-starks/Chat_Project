@@ -10,7 +10,7 @@ async def serialize_json(self, text_data):
         message_data = json.loads(text_data)
         message_processed = True
 
-    except:
+    except Exception:
         await self.send(
             text_data=json.dumps(
                 {"type": "error", "message": "data should be of type json"}

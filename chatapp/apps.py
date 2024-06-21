@@ -6,4 +6,4 @@ class ChatappConfig(AppConfig):
     name = "chatapp"
 
     def ready(self) -> None:
-        import chatapp.threads
+        import chatapp.threads  # noqa

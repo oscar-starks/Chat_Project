@@ -29,7 +29,7 @@ class MessageModel(TimeStampedUUIDModel):
     def image_url(self):
         try:
             url = self.image.url
-        except:
+        except Exception:
             url = None
         return url
 

@@ -15,7 +15,7 @@ class IsAuthenticatedCustom(BasePermission):
             raise AuthenticationFailed("Auth token not provided!")
         try:
             user = decodeJWT(http_auth)
-        except:
+        except Exception:
             raise AuthenticationFailed("Auth token invalid or expired!")
 
         if not user:

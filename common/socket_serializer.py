@@ -5,7 +5,7 @@ async def serialize_json(self, text_data, callback=None):
     try:
         message_data = json.loads(text_data)
         message_processed = True
-    except:
+    except Exception:
         await self.send(
             text_data=json.dumps(
                 {"type": "error", "message": "data should be of type json"}
@@ -47,8 +47,6 @@ async def serialize_json(self, text_data, callback=None):
                 for key in data_keys:
                     if key != "type":
                         notification_data[key] = message_data[key]
-
-                # print(self.room_group_name, "-------------------------------------------------------------------------------------------------------")
 
                 await self.channel_layer.group_send(
                     self.room_group_name, {"type": "notification"} | notification_data

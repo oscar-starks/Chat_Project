@@ -13,7 +13,7 @@ def decodeJWTForSocket(bearer):
 
     try:
         decoded = jwt.decode(bearer, settings.SECRET_KEY, algorithms=["HS256"])
-    except:
+    except Exception:
         return None
 
     if decoded:

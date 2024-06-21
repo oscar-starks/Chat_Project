@@ -28,7 +28,7 @@ class TokenAuthMiddleware:
             else:
                 scope["user"] = None
 
-        except:
+        except Exception:
             scope["user"] = None
 
         return await self.inner(scope, receive, send)
