@@ -1,5 +1,6 @@
 from rest_framework.response import Response
 
+
 class CustomSuccessResponse(Response):
     def __init__(self, data, status=200, **kwargs):
         resp = {"status": "success"}
@@ -12,5 +13,3 @@ class CustomErrorResponse(Response):
         resp = {"status": "error"}
         resp.update(data)
         super().__init__(data=resp, status=status, **kwargs)
-
-

@@ -1,13 +1,11 @@
 from django.contrib import admin
-from accounts.models import User
 from django.contrib.auth.hashers import make_password
 
+from accounts.models import User
+
+
 class UserResourceAdmin(admin.ModelAdmin):
-    search_fields = [
-        "email",
-        "full_name",
-        "is_active"
-    ]
+    search_fields = ["email", "full_name", "is_active"]
     list_per_page = 50
     date_hierarchy = "date_joined"
 
@@ -16,9 +14,9 @@ class UserResourceAdmin(admin.ModelAdmin):
         to_be_displayed.remove("password")
 
         return to_be_displayed
-    
+
     def save_model(self, request, obj, form, change):
-        
+
         # Hash the password before saving
         if "password" in form.changed_data:
             obj.password = make_password(form["password"].value())
@@ -26,6 +24,4 @@ class UserResourceAdmin(admin.ModelAdmin):
         super().save_model(request, obj, form, change)
 
 
-
 admin.site.register(User, UserResourceAdmin)
-    

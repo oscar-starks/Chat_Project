@@ -1,8 +1,8 @@
 from django.urls import path
-from chatapp.views import SendMessageView, GetChatsView
-from chatapp.consumers import NotificationConsumer
-from accounts.socket_middleware import TokenAuthMiddleware
 
+from accounts.socket_middleware import TokenAuthMiddleware
+from chatapp.consumers import NotificationConsumer
+from chatapp.views import GetChatsView, SendMessageView
 
 urlpatterns = [
     path("send_message/", SendMessageView.as_view()),
@@ -12,5 +12,4 @@ urlpatterns = [
 
 websocket_urls = [
     path("ws/notification/", TokenAuthMiddleware(NotificationConsumer.as_asgi())),
-    
 ]

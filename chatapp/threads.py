@@ -1,12 +1,15 @@
-import threading, asyncio, requests
+import asyncio
+import threading
 from io import BytesIO
-from chatapp.notifications import message_notification
-from django.dispatch import receiver
+
 from django.db.models.signals import pre_save
+from django.dispatch import receiver
+
 from chatapp.models import MessageModel
+from chatapp.notifications import message_notification
 
 
-class MessageImageSaverThread(threading.Thread): 
+class MessageImageSaverThread(threading.Thread):
     def __init__(self, user, obj, image, chat):
         self.obj = obj
         self.image = image
@@ -35,9 +38,10 @@ class MessageImageSaverThread(threading.Thread):
 # I had to create  this signal to send messages to users when
 # the image has been saved on aws so that the image url can be obtained
 
+
 @receiver(pre_save, sender=MessageModel)
 def message_notification_signal(sender, instance, **kwargs):
     if instance.image_url:
-        asyncio.run(message_notification(user_variable, chat_variable, message_variable))
-
-
+        asyncio.run(
+            message_notification(user_variable, chat_variable, message_variable)
+        )

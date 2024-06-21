@@ -1,8 +1,9 @@
-from chatapp.threads import MessageImageSaverThread
 from chatapp.models import MessageModel
 from chatapp.notifications import message_notification
+from chatapp.threads import MessageImageSaverThread
 
-async def messenger(serializer,sender, user,chat):
+
+async def messenger(serializer, sender, user, chat):
     image = serializer.validated_data.pop("image", None)
     text = serializer.validated_data.pop("text", None)
 
@@ -11,7 +12,7 @@ async def messenger(serializer,sender, user,chat):
     if text:
         message.text = text
     if image:
-        MessageImageSaverThread(user,message, image, chat).start()
+        MessageImageSaverThread(user, message, image, chat).start()
         return str(chat.id)
 
     else:

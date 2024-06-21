@@ -1,16 +1,24 @@
-from django.conf import settings
-import secrets, string, datetime, jwt
+import datetime
+import secrets
+import string
+
+import jwt
 from django.conf import settings
 
-def generate_token(length = 5) -> string:    
+
+def generate_token(length=5) -> string:
     numbers = string.digits
     token = ""
     while len(token) < length:
-        token += ''.join(secrets.choice(numbers))
+        token += "".join(secrets.choice(numbers))
     return token
 
+
 def get_random(length):
-    return "".join(secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length))
+    return "".join(
+        secrets.choice(string.ascii_uppercase + string.digits) for _ in range(length)
+    )
+
 
 def get_access_token(payload):
     return jwt.encode(
@@ -19,12 +27,17 @@ def get_access_token(payload):
         algorithm="HS256",
     )
 
+
 def get_refresh_token():
     return jwt.encode(
-       {"exp": datetime.datetime.now() + datetime.timedelta(days=21), "ref_key":get_random(20)},
+        {
+            "exp": datetime.datetime.now() + datetime.timedelta(days=21),
+            "ref_key": get_random(20),
+        },
         settings.SECRET_KEY,
-        algorithm="HS256", 
+        algorithm="HS256",
     )
+
 
 def verify_token(token):
     # decode the token
@@ -41,10 +54,8 @@ def verify_token(token):
 
     return decoded_data
 
- 
-def generate_random_string(length:int = 8):
+
+def generate_random_string(length: int = 8):
     chars = string.ascii_letters + string.digits
     random_string = "".join(secrets.choice(chars) for _ in range(length))
     return random_string
-
-
