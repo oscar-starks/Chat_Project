@@ -21,6 +21,9 @@ services:
     volumes:
       - learngual:/var/lib/postgresql/data
 
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+
   redis-db:
    image: redis
    restart: always
