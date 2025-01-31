@@ -7,20 +7,28 @@ services:
       - "8001:8000"
     volumes:
       - .:/code
+    depends_on:
+      - db
+      - redis-db
+    networks:
+      - chat_project_network
+    command: /bin/bash -c 'python3 manage.py runserver 0.0.0.0:8000'
+
   db:
     image: postgres:13-alpine
     restart: always
+    env_file:
+     - ./learngual/.env
     environment:
-      POSTGRES_DB: learngual
-      POSTGRES_USER: learngual
-      POSTGRES_PASSWORD: learngual
+      POSTGRES_DB: ${DATABASE_NAME}
+      POSTGRES_USER: ${DATABASE_USER}
+      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
 
     ports:
       - 5433:5432
 
     volumes:
       - learngual:/var/lib/postgresql/data
-
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -29,6 +37,10 @@ services:
    restart: always
 
 
-
 volumes:
   learngual:
+  db:
+
+
+networks:
+  chat_project_network:
