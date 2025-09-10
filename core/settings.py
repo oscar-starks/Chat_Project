@@ -38,7 +38,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
 ]
 
-ROOT_URLCONF = "learngual.urls"
+ROOT_URLCONF = "core.urls"
 
 TEMPLATES = [
     {
@@ -56,8 +56,8 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = "learngual.wsgi.application"
-ASGI_APPLICATION = "learngual.asgi.application"
+WSGI_APPLICATION = "core.wsgi.application"
+ASGI_APPLICATION = "core.asgi.application"
 
 
 AUTH_USER_MODEL = "accounts.User"

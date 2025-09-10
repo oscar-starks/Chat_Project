@@ -18,7 +18,7 @@ services:
     image: postgres:13-alpine
     restart: always
     env_file:
-     - ./learngual/.env
+     - ./core/.env
     environment:
       POSTGRES_DB: ${DATABASE_NAME}
       POSTGRES_USER: ${DATABASE_USER}
@@ -28,7 +28,7 @@ services:
       - 5433:5432
 
     volumes:
-      - learngual:/var/lib/postgresql/data
+      - core:/var/lib/postgresql/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
@@ -38,7 +38,7 @@ services:
 
 
 volumes:
-  learngual:
+  core:
   db:
 
 
