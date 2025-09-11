@@ -2,6 +2,7 @@ import json
 
 
 async def serialize_json(self, text_data, callback=None):
+    message_processed = False
     try:
         message_data = json.loads(text_data)
         message_processed = True
@@ -11,7 +12,6 @@ async def serialize_json(self, text_data, callback=None):
                 {"type": "error", "message": "data should be of type json"}
             )
         )
-        message_processed = False
 
     if message_processed:
         if type(message_data) != dict:
@@ -31,23 +31,16 @@ async def serialize_json(self, text_data, callback=None):
                     await self.send(text_data=json.dumps(callbackResponse))
 
                 else:
-                    notification_data = {}
-                    for key in data_keys:
-                        if key != "type":
-                            notification_data[key] = message_data[key]
+                    message_data.pop("type", None)
 
                     await self.channel_layer.group_send(
                         self.room_group_name,
-                        {"type": "notification"} | notification_data,
+                        {"type": "notification"} | message_data,
                     )
 
             else:
-
-                notification_data = {}
-                for key in data_keys:
-                    if key != "type":
-                        notification_data[key] = message_data[key]
+                message_data.pop("type", None)
 
                 await self.channel_layer.group_send(
-                    self.room_group_name, {"type": "notification"} | notification_data
+                    self.room_group_name, {"type": "notification"} | message_data
                 )

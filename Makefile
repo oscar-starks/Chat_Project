@@ -9,3 +9,9 @@ pre-commit:
 
 build-local:
 	docker-compose -f local.yml build --no-cache
+
+make-migrations:
+	docker-compose -f local.yml exec web python manage.py makemigrations
+
+migrate:
+	docker-compose -f local.yml exec web python manage.py migrate

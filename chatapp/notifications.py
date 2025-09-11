@@ -1,10 +1,7 @@
-import json
-
-import websockets
 from asgiref.sync import sync_to_async
-from decouple import config
+from channels.layers import get_channel_layer
 
-from common.custom_functions import get_socket_access_token
+channel_layer = get_channel_layer()
 
 
 async def message_notification(user, chat, message):
@@ -23,14 +20,10 @@ async def message_notification(user, chat, message):
         },
     }
 
-    HOST = config("HOST")
-
-    access = get_socket_access_token({"user_id": (str(user.uuid))})
-
-    uri = f"ws://{HOST}/ws/notification/"
-
-    async with websockets.connect(uri, extra_headers={"token": access}) as websocket:
-        await websocket.send(json.dumps({"data": notification_data}))
+    await channel_layer.group_send(
+        f"{user.uuid}__notifications",
+        {"type": "notification", "message": notification_data},
+    )
 
 
 async def read_receipt_notification(user, message_id, chat_id):
@@ -40,14 +33,12 @@ async def read_receipt_notification(user, message_id, chat_id):
     showing that it has been read
     """
 
-    access = get_socket_access_token({"user_id": (str(user.uuid))})
-    HOST = config("HOST")
-    uri = f"ws://{HOST}/ws/notification/"
-
     notification_data = {
         "notification_type": "read_receipt",
         "notification_data": {"chat_id": str(chat_id), "message_id": message_id},
     }
 
-    async with websockets.connect(uri, extra_headers={"token": access}) as websocket:
-        await websocket.send(json.dumps({"data": notification_data}))
+    await channel_layer.group_send(
+        f"{user.uuid}__notifications",
+        {"type": "notification", "message": notification_data},
+    )

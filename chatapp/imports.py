@@ -6,7 +6,6 @@ from rest_framework.views import APIView  # noqa
 
 # noqa
 from accounts.models import User  # noqa
-from accounts.responses import CustomErrorResponse, CustomSuccessResponse  # noqa
 from chatapp.chat_message import messenger  # noqa
 from chatapp.models import Chat, MessageModel  # noqa
 from chatapp.notifications import read_receipt_notification  # noqa
@@ -18,3 +17,4 @@ from chatapp.serializers import SendMessageSerializer  # noqa; noqa
 from chatapp.threads import MessageImageSaverThread  # noqa
 from common.custom_authentications import IsAuthenticatedCustom  # noqa
 from common.paginator import customPaginator  # noqa
+from common.responses import CustomErrorResponse, CustomSuccessResponse  # noqa

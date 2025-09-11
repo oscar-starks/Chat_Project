@@ -12,6 +12,8 @@ services:
       - redis-db
     networks:
       - chat_project_network
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
     command: /bin/bash -c 'python3 manage.py runserver 0.0.0.0:8000'
 
   db:
@@ -19,28 +21,33 @@ services:
     restart: always
     env_file:
      - ./core/.env
-    environment:
-      POSTGRES_DB: ${DATABASE_NAME}
-      POSTGRES_USER: ${DATABASE_USER}
-      POSTGRES_PASSWORD: ${DATABASE_PASSWORD}
 
     ports:
       - 5433:5432
 
+    networks:
+      - chat_project_network
     volumes:
       - core:/var/lib/postgresql/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
 
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U techpriest -d chat_project -h localhost -p 5432"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
   redis-db:
    image: redis
    restart: always
 
+   networks:
+      - chat_project_network
 
 volumes:
   core:
   db:
-
 
 networks:
   chat_project_network:

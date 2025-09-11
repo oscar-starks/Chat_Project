@@ -1,13 +1,13 @@
 import asyncio
 import json
-from logging import get_logger
+from logging import getLogger
 
 from channels.generic.websocket import AsyncWebsocketConsumer
 
 from common.custom_authentications import authenticate
 from common.socket_serializer import serialize_json
 
-logger = get_logger(__name__)
+logger = getLogger(__file__)
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):

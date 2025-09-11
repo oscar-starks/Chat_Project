@@ -2,9 +2,9 @@ from django.contrib.auth import authenticate
 from rest_framework.views import APIView
 
 from accounts.models import Jwt, User
-from accounts.responses import CustomErrorResponse, CustomSuccessResponse
 from accounts.serializers import LoginSerializer
 from common.custom_functions import get_access_token, get_refresh_token
+from common.responses import CustomErrorResponse, CustomSuccessResponse
 
 
 class LoginView(APIView):
@@ -32,4 +32,6 @@ class LoginView(APIView):
         refresh = get_refresh_token()
 
         Jwt.objects.create(user=user, access=access, refresh=refresh)
-        return CustomSuccessResponse({"access": access, "refresh": refresh})
+        return CustomSuccessResponse(
+            {"access": access, "refresh": refresh, "user_id": str(user.uuid)}
+        )
