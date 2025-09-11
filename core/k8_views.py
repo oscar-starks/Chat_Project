@@ -1,15 +1,17 @@
-from django.http import JsonResponse, HttpResponse
 import json
+
+from django.http import HttpResponse, JsonResponse
+
 
 def healthz(request):
     return JsonResponse({"status": "ok"})
 
+
 def dapr_subscribe(request):
     # Dapr calls this to learn topics (optional approach)
-    subs = [
-        {"pubsubname": "kafka-pubsub", "topic": "orders", "route": "orders"}
-    ]
+    subs = [{"pubsubname": "kafka-pubsub", "topic": "orders", "route": "orders"}]
     return JsonResponse(subs, safe=False)
+
 
 def orders_handler(request):
     if request.method != "POST":

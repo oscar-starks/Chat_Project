@@ -52,5 +52,12 @@ docker-compose -f local.yml exec web python manage.py test
 - `accounts/` - User authentication and management
 - `common/` - Shared utilities and functions
 
+## To Test WebSocket
+- login at `http://localhost:8001/accounts/login/`
+- connect to websocket at `ws://127.0.0.1:8001/ws/notification/`
+- the `access` received on login is passed as the `token` header on the websocket endpoint
+- to send a notification to another user, you use `http://localhost:8001/chat/send_message/`
+- the other user whose `receiver_id` was passed in the request data will receive the message on his own notification websocket
+
 ## License
 MIT
