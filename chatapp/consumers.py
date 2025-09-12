@@ -7,7 +7,7 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 from common.custom_authentications import authenticate
 from common.socket_serializer import serialize_json
 
-logger = getLogger(__file__)
+logger = getLogger(__name__)
 
 
 class NotificationConsumer(AsyncWebsocketConsumer):

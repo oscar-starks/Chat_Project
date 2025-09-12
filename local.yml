@@ -16,33 +16,45 @@ services:
       - "host.docker.internal:host-gateway"
     command: /bin/bash -c 'python3 manage.py runserver 0.0.0.0:8000'
 
+  web-dapr:
+    image: "daprio/daprd:1.15.11"
+    command: [
+      "./daprd",
+      "-app-id", "service-1",
+      "-app-port", "8000",              # Django listens on 8000 inside container
+      "-dapr-http-port", "3500",        # Dapr HTTP API
+      "-dapr-grpc-port", "50001",       # Dapr gRPC API
+      "-resources-path", "/components"
+    ]
+    volumes:
+      - "./components:/components"
+    network_mode: "service:web" # share network with Django container
+    depends_on:
+      - web
+
   db:
     image: postgres:13-alpine
     restart: always
     env_file:
      - ./core/.env
-
     ports:
       - 5433:5432
-
     networks:
       - chat_project_network
     volumes:
       - core:/var/lib/postgresql/data
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U techpriest -d chat_project -h localhost -p 5432"]
+      test: ["CMD-SHELL", "pg_isready -U ${DATABASE_USER} -d ${DATABASE_NAME} -h localhost -p 5432"]
       interval: 10s
       timeout: 5s
       retries: 5
 
   redis-db:
-   image: redis
-   restart: always
-
-   networks:
+    image: redis
+    restart: always
+    networks:
       - chat_project_network
 
 volumes:

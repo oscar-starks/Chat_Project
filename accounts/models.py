@@ -38,9 +38,7 @@ class Jwt(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     access = models.CharField(max_length=1000)
     refresh = models.CharField(max_length=1000)
-    refresh_expiry = models.DateTimeField(
-        default=timezone.now() + timezone.timedelta(hours=24)
-    )
+    refresh_expiry = models.DateTimeField(default=timezone.now)
 
 
 class Notification(models.Model):
