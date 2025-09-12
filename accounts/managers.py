@@ -12,8 +12,6 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_("You must provide a valid email address"))
 
     def create_user(self, email, password, **extra_fields):
-        # if not full_name:
-        #     raise ValueError(_("Users must submit a full name"))
 
         if email:
             self.normalize_email(email)

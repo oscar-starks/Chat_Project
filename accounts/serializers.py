@@ -10,7 +10,7 @@ class PasswordSerializer(serializers.Serializer):
 
 
 class LoginSerializer(EmailSerializer, PasswordSerializer):
-    pass
+    ...
 
 
 class UserProfileSerializer(serializers.Serializer):
